@@ -51,16 +51,16 @@ bool bruteForce(const string& current_guess, const string& target_hash, const st
     return false;
 }
 
-int main() {
+int Crack(const string& targetString,int maxLength ) {
     // The hash of the password we're trying to guess (replace this with your target hash)
-    string target_password = "pass";
+    string target_password = targetString;
     string target_hash = sha256(target_password);
 
     // Character set to brute-force from (e.g., lowercase letters and digits)
     string characters = "abcdefghijklmnopqrstuvwxyz0123456789";
 
     // Maximum password length to try (to limit the brute-force search)
-    int max_length = 4; // Adjust this based on how long you expect the password to be
+    int max_length = maxLength; // Adjust this based on how long you expect the password to be
 
     // Start the brute-force attack
     cout << "Starting brute-force attack for hash: " << target_hash << endl;
@@ -71,3 +71,4 @@ int main() {
 
     return 0;
 }
+
