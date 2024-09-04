@@ -71,4 +71,8 @@ int Crack(const string& targetString,int maxLength ) {
 
     return 0;
 }
-
+/*
+int main(){
+    Crack("aaa",4);
+    return 0;
+}*/
