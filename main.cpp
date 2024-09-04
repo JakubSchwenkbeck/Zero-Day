@@ -21,7 +21,7 @@ int main(){
         std::cin >> toCrack;
 
 
-        std::cout << "Entered: "<< toCrack << " \n \n Please enter max length: \n"; // get Max Pass Length to crack
+        std::cout << "Entered: "<< toCrack << " \n \n Please enter max length: \n   Enter 0 if you want to use default \n "; // get Max Pass Length to crack
         int Max;
         std::cin >> Max;
 
