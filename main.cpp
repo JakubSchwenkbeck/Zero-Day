@@ -43,7 +43,7 @@ int main(){
         std::cout << "Entered: "<< toCrack << std::endl;
 
         std::cout << "\n Dictonary Attack started!" << std::endl;
-       // dict_Crack(toCrack);
+        //dict_Crack(toCrack);
 
 
     }

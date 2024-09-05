@@ -21,6 +21,8 @@ std::string dictionaryAttack(const std::string& target_hash, const std::string& 
     }
     return "";
 }
+
+
 int dict_Crack(const std::string& targetString){
     std::string target_password = targetString;
     std::string target_hash = sha256(target_password);
