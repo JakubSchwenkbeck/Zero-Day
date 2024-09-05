@@ -8,6 +8,6 @@
 std::string rainbowAttack(const std::string& target_hash, const std::unordered_map<std::string, std::string>& table) ;
 
 // Main function to initiate rainbow table  cracking
-int rain_Crack();
+int rain_Crack(const std::string& target_pass);
 
 #endif // RAINBOW_H
