@@ -2,67 +2,93 @@
 #include <openssl/sha.h>
 #include <string>
 #include <vector>
-#include <utils/utils.h>
-using namespace std;
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <chrono>
+//#include "utils/utils.h"
+
+
+// Global variables for synchronization
+std::mutex mtx;
+std::condition_variable cv;
+bool found = false;
+
+
+// Function to compute SHA256 hash
+std::string sha256(const std::string& str) {
+    unsigned char hash[SHA256_DIGEST_LENGTH];
+    SHA256(reinterpret_cast<const unsigned char*>(str.c_str()), str.size(), hash);
+    char buf[2 * SHA256_DIGEST_LENGTH + 1];
+    for (int i = 0; i < SHA256_DIGEST_LENGTH; ++i) {
+        sprintf(buf + i * 2, "%02x", hash[i]);
+    }
+    return std::string(buf);
+}
 
 
 // Recursively tries every combination of characters to brute-force the password
-bool bruteForce(const string& current_guess, const string& target_hash, const string& characters, int max_length) {
-    // Calculate the SHA256 hash of the current guess
-    string current_hash = sha256(current_guess);
+void bruteForce(const std::string& current_guess, const std::string& target_hash, const std::string& characters, int max_length) {
+    if (found) return;  // Stop if the password has already been found
 
-    // Print the current guess (optional, can be removed if too slow)
-    cout << "Trying: " << current_guess << " -> Hash: " << current_hash << endl;
+    std::string current_hash = sha256(current_guess);
 
-    // Check if the guessed hash matches the target hash
+    {
+        std::lock_guard<std::mutex> lock(mtx);
+        std::cout << "Trying: " << current_guess << " -> Hash: " << current_hash << std::endl;
+    }
+
     if (current_hash == target_hash) {
-        cout << "Password found! It is: " << current_guess << endl;
-        return true;
-    }
-
-    // Stop if the maximum password length is reached
-    if (current_guess.length() >= max_length) {
-        return false;
-    }
-
-    // Recursively try every character in the character set
-    for (char c : characters) {
-        if (bruteForce(current_guess + c, target_hash, characters, max_length)) {
-            return true;
+        {
+            std::lock_guard<std::mutex> lock(mtx);
+            found = true;
+            std::cout << "Password found! It is: " << current_guess << std::endl;
+            cv.notify_all();  // Notify all threads that the password is found
         }
+        return;
     }
 
-    return false;
+    if (current_guess.length() >= max_length) {
+        return;
+    }
+
+    std::vector<std::thread> threads;
+
+    for (char c : characters) {
+        threads.emplace_back([=]() {
+            bruteForce(current_guess + c, target_hash, characters, max_length);
+        });
+    }
+
+    for (auto& t : threads) {
+        t.join();  // Wait for all threads to finish
+    }
 }
 
-int Crack(const string& targetString,int maxLength ) {
-    // The hash of the password we're trying to guess (replace this with your target hash)
-    string target_password = targetString;
-    string target_hash = sha256(target_password);
+int Crack(const std::string& targetString, int maxLength) {
+    std::string target_password = targetString;
+    std::string target_hash = sha256(target_password);
 
-    // Character set to brute-force from (e.g., lowercase letters and digits)
-    string characters = "abcdefghijklmnopqrstuvwxyz0123456789";
+    std::string characters = "abcdefghijklmnopqrstuvwxyz0123456789";
 
-    // Maximum password length to try (to limit the brute-force search)
+    int max_length = (maxLength > 0) ? maxLength : 10; // Default to 10 if maxLength is not provided
 
-    int max_length;
-    if (maxLength > 0){
-     max_length = maxLength; 
-    }else {
-         max_length = 10; // default
+    std::cout << "Starting brute-force attack for hash: " << target_hash << std::endl;
+   // Start timing
+    auto start = std::chrono::high_resolution_clock::now();
+
+    bruteForce("", target_hash, characters, max_length);
+ // Stop timing
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+
+    std::cout << "Elapsed time: " << elapsed.count() << " seconds" << std::endl;
+
+    if (!found) {
+        std::cout << "Password not found within the given character set and length limit." << std::endl;
     }
-
-    // Start the brute-force attack
-    cout << "Starting brute-force attack for hash: " << target_hash << endl;
-
-    if (!bruteForce("", target_hash, characters, max_length)) {
-        cout << "Password not found within the given character set and length limit." << endl;
-    } 
 
     return 0;
 }
-/*
-int main(){
-    Crack("aaa",4);
-    return 0;
-}*/
+
+
