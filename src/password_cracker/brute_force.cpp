@@ -2,25 +2,9 @@
 #include <openssl/sha.h>
 #include <string>
 #include <vector>
-
+#include <utils/utils.h>
 using namespace std;
 
-// Helper function to compute SHA256 hash of the input string
-string sha256(const string& str) {
-    unsigned char hash[SHA256_DIGEST_LENGTH];
-    SHA256_CTX sha256;
-    SHA256_Init(&sha256);
-    SHA256_Update(&sha256, str.c_str(), str.size());
-    SHA256_Final(hash, &sha256);
-
-    string output;
-    for (int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
-        char buffer[3];
-        sprintf(buffer, "%02x", hash[i]);
-        output += buffer;
-    }
-    return output;
-}
 
 // Recursively tries every combination of characters to brute-force the password
 bool bruteForce(const string& current_guess, const string& target_hash, const string& characters, int max_length) {
