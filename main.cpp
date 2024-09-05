@@ -12,7 +12,7 @@ int main(){
     std::cout << "Choose a tool:\n";
     std::cout << "1. Brute Force\n";
     std::cout << "2. Dictonary\n";
-    std::cout << "2. Rainbow Table\n";
+    std::cout << "3. Rainbow Table\n";
 
     std::cin >> choice;
 
