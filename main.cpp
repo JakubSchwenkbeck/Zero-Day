@@ -1,4 +1,6 @@
 #include "password_cracker/brute_force.h"
+#include "password_cracker/dictionary.h"
+
 #include <string>
 #include <iostream>
 
@@ -9,6 +11,7 @@ int main(){
     int choice;
     std::cout << "Choose a tool:\n";
     std::cout << "1. Brute Force\n";
+    std::cout << "2. Dictonary\n";
     std::cin >> choice;
 
 
@@ -16,7 +19,7 @@ int main(){
  if (choice == 1) {  // Brute force password cracking
 
 
-        std::cout << "Enter Hash to crack: \n" ; //Get hash to crack param
+        std::cout << "Enter Password to crack: \n" ; //Get hash to crack param
         std::string toCrack;
         std::cin >> toCrack;
 
@@ -27,9 +30,28 @@ int main(){
 
 
         std::cout << "Bruteforce started!" << std::endl; // start cracking hash
-        Crack(toCrack,Max);
+        brute_Crack(toCrack,Max);
 
-    } else {
+    } else if (choice == 2) {
+        
+
+        std::cout << "Enter Password to crack: \n" ; //Get hash to crack param
+        std::string toCrack;
+        std::cin >> toCrack;
+
+
+        std::cout << "Entered: "<< toCrack << std::endl;
+
+        std::cout << "\n Dictonary Attack started!" << std::endl;
+       // dict_Crack(toCrack);
+
+
+    }
+    
+    
+    else{
+
+        
         std::cout << "Invalid choice!" << std::endl; // default else
     }
 
