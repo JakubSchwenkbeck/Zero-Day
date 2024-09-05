@@ -23,9 +23,9 @@ std::string rainbowAttack(const std::string& target_hash, const std::unordered_m
     return "";
 }
 
-int rain_Crack() {
+int rain_Crack(const std::string& target_pass) {
     std::vector<std::string> passwords = {"password", "123456", "letmein"};
-    std::string target_password = "123456";
+    std::string target_password = target_pass;
     std::string target_hash = sha256(target_password);
     auto table = generateRainbowTable(passwords);
     std::string found_password = rainbowAttack(target_hash, table);
