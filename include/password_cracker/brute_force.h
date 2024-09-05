@@ -3,9 +3,6 @@
 
 #include <string>
 
-// Function to compute SHA256 hash of the input string
-std::string sha256(const std::string& str);
-
 // Recursive function to brute-force the password
 bool bruteForce(const std::string& current_guess, const std::string& target_hash, const std::string& characters, int max_length);
 
