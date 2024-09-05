@@ -12,6 +12,8 @@ int main(){
     std::cout << "Choose a tool:\n";
     std::cout << "1. Brute Force\n";
     std::cout << "2. Dictonary\n";
+    std::cout << "2. Rainbow Table\n";
+
     std::cin >> choice;
 
 
@@ -45,9 +47,19 @@ int main(){
         std::cout << "\n Dictonary Attack started!" << std::endl;
         //dict_Crack(toCrack);
 
+    } else if (choice == 3 ) {
 
+        
+        std::cout << "Enter Password to crack: \n" ; //Get hash to crack param
+        std::string toCrack;
+        std::cin >> toCrack;
+
+
+        std::cout << "Entered: "<< toCrack << std::endl;
+
+        std::cout << "\n Rainbow Attack started!" << std::endl;
+         // rain_Crack(toCrack);
     }
-    
     
     else{
 
