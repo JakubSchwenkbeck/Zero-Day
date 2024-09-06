@@ -4,17 +4,14 @@
 #include <string>
 #include <iostream>
 void CLI_password_cracker();
-
+void printHome();
 int main(){
 
 // Choice of Branch:
-    int choice;
-    std::cout << "Choose a Branch:\n";
-    std::cout << "1. Password cracking \n";
-    std::cout << "2. encryption\n";
-    std::cout << "3. scanner\n \n";
+    printHome();
 
-    std::cin >> choice;
+    int choice;
+      std::cin >> choice;
    // if cases for choice:
  if     (choice == 1) {  // Password Cracking
 
@@ -25,6 +22,8 @@ int main(){
 
  }else if (choice == 3){
 
+ }else if (choice == 0){
+return 0;
 
  }else{
             std::cout << "Invalid choice!" << std::endl; // default else
@@ -33,20 +32,24 @@ int main(){
  }
         std::string exit;
     std::cout << "Type exit to exit Tool" << std::endl;
-    while(true){
+
 
     std::cin >> exit;
     if(exit == "exit" ||exit == "Exit" || exit == "exit()"){
         return 0;
+        std::cout << "\033[0m";  // Red text color
+
     }
 
 
-    }
-    return 0;
+    
+        std::cout << "\033[0m";  // Red text color
 
 }
  void CLI_password_cracker(){
 // Choice of Tool:
+
+
     int choice;
     std::cout << "Choose a tool:\n";
     std::cout << "1. Brute Force\n";
@@ -107,5 +110,26 @@ int main(){
     }
 
    
+
+}
+
+void printHome(){
+         //   std::cout << "\033[31m";  // Red text color
+
+
+    std::cout << "\033[38;2;179;0;0m";  // Dark Red Color
+            std::cout << R"(
+                        //////////ZERODAY\\\\\\\\\\
+                                          
+                        What would you like to do?
+
+                        1. crack password
+                        2. encrypt / decrypt
+                        3. scan for vulnerabilities
+                        0. exit
+
+                
+
+                )";
 
 }
