@@ -8,6 +8,7 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
+               // "${workspaceFolder}/src/scanner/port_scanner.cpp"
                 "${workspaceFolder}/main.cpp",                     // Path to your main file
                 "${workspaceFolder}/src/password_cracker/brute_force.cpp", // Path to your source files
                 "-I${workspaceFolder}/include",                    // Path to the include directory
