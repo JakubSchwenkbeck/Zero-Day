@@ -17,8 +17,8 @@ std::string XOR(const std::string& msg,const std::string& key){
     }
 
 
-    std::string result; 
-    //(msg.length(),"\0"); // init result string
+  //  std::string result; 
+    std::string result(msg.length(), '\0');  // Initialize result string
     
     for(size_t i = 0;i < msg.length(); i++ ){
         result[i] = msg[i] ^ key[i % key.length()]; // bit wise XOR , handling padding of key
