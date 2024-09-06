@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+void CLI_password_cracker();
 
 int main(){
 
@@ -11,7 +12,7 @@ int main(){
     std::cout << "Choose a Branch:\n";
     std::cout << "1. Password cracking \n";
     std::cout << "2. encryption\n";
-    std::cout << "3. scanner\n";
+    std::cout << "3. scanner\n \n";
 
     std::cin >> choice;
    // if cases for choice:
@@ -30,18 +31,27 @@ int main(){
 
 
  }
+        std::string exit;
+    std::cout << "Type exit to exit Tool" << std::endl;
+    while(true){
 
-    
+    std::cin >> exit;
+    if(exit == "exit" ||exit == "Exit" || exit == "exit()"){
+        return 0;
+    }
+
+
+    }
     return 0;
 
 }
-void CLI_password_cracker(){
+ void CLI_password_cracker(){
 // Choice of Tool:
     int choice;
     std::cout << "Choose a tool:\n";
     std::cout << "1. Brute Force\n";
     std::cout << "2. Dictonary\n";
-    std::cout << "3. Rainbow Table\n";
+    std::cout << "3. Rainbow Table\n \n";
 
     std::cin >> choice;
 
