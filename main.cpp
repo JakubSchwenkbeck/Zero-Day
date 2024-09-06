@@ -6,8 +6,37 @@
 
 int main(){
 
+// Choice of Branch:
+    int choice;
+    std::cout << "Choose a Branch:\n";
+    std::cout << "1. Password cracking \n";
+    std::cout << "2. encryption\n";
+    std::cout << "3. scanner\n";
 
-    // Choice of Tool:
+    std::cin >> choice;
+   // if cases for choice:
+ if     (choice == 1) {  // Password Cracking
+
+    CLI_password_cracker();
+
+ }else if(choice == 2){
+
+
+ }else if (choice == 3){
+
+
+ }else{
+            std::cout << "Invalid choice!" << std::endl; // default else
+
+
+ }
+
+    
+    return 0;
+
+}
+void CLI_password_cracker(){
+// Choice of Tool:
     int choice;
     std::cout << "Choose a tool:\n";
     std::cout << "1. Brute Force\n";
@@ -68,6 +97,5 @@ int main(){
     }
 
    
-    return 0;
 
 }
