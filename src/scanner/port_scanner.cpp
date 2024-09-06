@@ -31,7 +31,7 @@ bool isPortOpen(const char *ip, int port) {
     MultiByteToWideChar(CP_ACP, 0, ip, -1, w_ip, 100);
 
     // Use InetPton with wide string
-    if (InetPtonW(AF_INET, w_ip, &target.sin_addr) <= 0) {
+    if (InetPtonW(AF_INET, w_ip, &target.sin_addr) <= 0) { //InetPtonw or InetPton both not found...
         std::cerr << "Invalid IP address!" << std::endl;
         closesocket(sock);
         WSACleanup();
@@ -51,7 +51,7 @@ bool isPortOpen(const char *ip, int port) {
 }
 
 int main() {
-    const char *target_ip = "192.168.1.1";  // Replace with your target IP
+    const char *target_ip = "192.168.1.1";  // Replace with  target IP
     int start_port = 1, end_port = 1024;
 
     for (int port = start_port; port <= end_port; ++port) {
