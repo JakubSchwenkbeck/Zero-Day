@@ -1,6 +1,7 @@
 #include <iostream>
 #include <winsock2.h>    // For WinSock2 API
 #include <ws2tcpip.h>    // For InetPton() function
+#include <chrono>        // For timeouts
 
 #pragma comment(lib, "ws2_32.lib")  // Link with WinSock2 library
 
@@ -8,7 +9,8 @@
 #define _WIN32_WINNT 0x0600  // Windows Vista or later required for InetPton
 #endif
 
-bool isPortOpen(const char *ip, int port) {
+// Function to check if a port is open
+bool isPortOpen(const char* ip, int port, int timeout_ms = 2000) {
     // Initialize WinSock2
     WSADATA wsaData;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
@@ -16,6 +18,7 @@ bool isPortOpen(const char *ip, int port) {
         return false;
     }
 
+    // Create socket
     SOCKET sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (sock == INVALID_SOCKET) {
         std::cerr << "Socket creation failed!" << std::endl;
@@ -23,35 +26,38 @@ bool isPortOpen(const char *ip, int port) {
         return false;
     }
 
+    // Set socket timeout
+    timeval timeout;
+    timeout.tv_sec = timeout_ms / 1000;
+    timeout.tv_usec = (timeout_ms % 1000) * 1000;  // microseconds
+    setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, (char*)&timeout, sizeof(timeout));
+    setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, (char*)&timeout, sizeof(timeout));
+
+    // Set up target address
     sockaddr_in target;
     target.sin_family = AF_INET;
     target.sin_port = htons(port);
-     // Convert char* to wide string (wchar_t)
-    wchar_t w_ip[100];
-    MultiByteToWideChar(CP_ACP, 0, ip, -1, w_ip, 100);
 
-    // Use InetPton with wide string
-    if (InetPtonW(AF_INET, w_ip, &target.sin_addr) <= 0) {
-        std::cerr << "Invalid IP address!" << std::endl;
+    // Convert IP address from string to binary form
+    if (InetPtonA(AF_INET, ip, &target.sin_addr) <= 0) {
+        std::cerr << "Invalid IP address: " << ip << std::endl;
         closesocket(sock);
         WSACleanup();
         return false;
     }
 
-    int connection = connect(sock, (struct sockaddr *)&target, sizeof(target));
+    // Attempt to connect to the port
+    int connection = connect(sock, (struct sockaddr*)&target, sizeof(target));
 
-    closesocket(sock);  // Close the socket
-    WSACleanup();       // Cleanup WinSock2
+    // Close socket and cleanup WinSock
+    closesocket(sock);
+    WSACleanup();
 
-    if (connection == 0) {
-        return true;  // Port is open
-    } else {
-        return false; // Port is closed
-    }
+    return (connection == 0);  // Returns true if connection successful (port open)
 }
 
 int main() {
-    const char *target_ip = "192.168.1.1";  // Replace with your target IP
+    const char* target_ip = "192.168.1.1";  // Replace with your target IP
     int start_port = 1, end_port = 1024;
 
     for (int port = start_port; port <= end_port; ++port) {
