@@ -1,11 +1,12 @@
 #include "password_cracker/brute_force.h"
 #include "password_cracker/dictionary.h"
-
+#include "scanner/port_scanner.h"
 #include <string>
 #include <iostream>
 void CLI_password_cracker();
 void printHome();
 int main(){
+    
 
 // Choice of Branch:
     printHome();
@@ -21,6 +22,7 @@ int main(){
 
 
  }else if (choice == 3){
+    Portmain();
 
  }else if (choice == 0){
 return 0;
